@@ -2,21 +2,9 @@ import pytest
 from sqltools import cli
 
 
-purl = "postgres://user@localhost:5432/sampledb"
-murl = "mysql://user@localhost:3306/sampledb"
-
-
 @pytest.fixture
 def parser():
     return cli.create_parser()
-
-
-def test_parser_without_url(parser):
-    """
-    Without a specified driver the parser will exit
-    """
-    with pytest.raises(SystemExit):
-        parser.parse_args(["--type", "postgres", "--driver", "local", "backups"])
 
 
 def test_parser_without_type(parser):
@@ -24,7 +12,24 @@ def test_parser_without_type(parser):
     Without a specified driver the parser will exit
     """
     with pytest.raises(SystemExit):
-        parser.parse_args([purl, "--driver", "local", "backups"])
+        parser.parse_args(
+            ["-H", "localhost", "-U", "user", "-P" "5432", "--driver", "local", "backups"])
+
+
+def test_parser_without_host(parser):
+    """
+    Without a host specified
+    """
+    with pytest.raises(SystemExit):
+        parser.parse_args(["-T", "postgres", "-U", "user", "-P" "5432", "--driver", "local", "backups"])
+
+
+def test_parser_without_user(parser):
+    """
+    Without a host specified
+    """
+    with pytest.raises(SystemExit):
+        parser.parse_args(["-T", "postgres", "-H", "localhost","-P" "5432", "--driver", "local", "backups"])
 
 
 def test_parser_without_driver(parser):
@@ -32,7 +37,7 @@ def test_parser_without_driver(parser):
     Without a specified driver the parser will exit
     """
     with pytest.raises(SystemExit):
-        parser.parse_args([purl, "--type", "postgres", "backups"])
+        parser.parse_args(["-T", "postgres", "-H", "localhost", "-U", "user", "-P" "5432", "backups"])
 
 
 def test_parser_without_destination(parser):
@@ -40,17 +45,25 @@ def test_parser_without_destination(parser):
     Without a specified driver the parser will exit
     """
     with pytest.raises(SystemExit):
-        parser.parse_args([purl,   "--type", "postgres", "--driver", "local"])
+        parser.parse_args(
+        ["-T", "postgres", "-H", "localhost", "-U", "user", "-p", "password", "-P" "5432", "-db", "sampledb",
+         "--driver", "local"])
 
 def test_parser_complete(parser):
     """
     The parser will not exit if it receives all arguments
     """
-    args = parser.parse_args( [purl, "--type","postgres", "--driver","local", "backups"])
+    args = parser.parse_args(
+        ["-T", "postgres", "-H", "localhost", "-U", "user", "-p", "password", "-P" "5432", "-db", "sampledb",
+         "--driver", "local", "backups"])
 
-    assert args.driver == 'local'
-    assert args.url == purl
     assert args.type == 'postgres'
+    assert args.host == 'localhost'
+    assert args.user == 'user'
+    assert args.password == 'password'
+    assert args.port == '5432'
+    assert args.db == 'sampledb'
+    assert args.driver == 'local'
     assert args.destination == 'backups'
 
 
@@ -60,7 +73,7 @@ def test_parser_with_unknown_driver(parser):
     """
 
     with pytest.raises(SystemExit):
-        parser.parse_args([purl, "--type", "postgres", "--driver","azure", "destination"])
+        parser.parse_args(["-T", "postgres", "-H", "localhost", "-U", "user","-p","password", "-P" "5432", "-db", "sampledb", "--driver", "azure", "backups"])
 
 def test_parser_with_known_drivers(parser):
     """
@@ -68,7 +81,6 @@ def test_parser_with_known_drivers(parser):
     """
 
     for driver in ['local', 's3']:
-        assert parser.parse_args([purl, "--type", "postgres", "--driver",
-                                  driver, 'destination'])
+        assert parser.parse_args(["-T", "postgres", "-H", "localhost", "-U", "user","-p","password", "-P" "5432", "-db", "sampledb", "--driver", driver, "backups"])
 
 
