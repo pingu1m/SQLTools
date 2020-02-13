@@ -1,4 +1,4 @@
-sqltools
+SQLTools
 =======
 
 CLI for backup remote SQL databases either locally or to a S3 like destination.
@@ -7,7 +7,7 @@ Preparing for Development
 -------------------------
 
 1. Ensure ``pip`` and ``pipenv`` are installed
-2. Clone repository: ``git clone gitlab:sqltools``
+2. Clone repository: ``git clone https://github.com/pingu1m/SQLTools``
 3. ``cd`` into the repository.
 4. Fetch development dependencies ``make install``
 5. Activate virtualenv: ``pipenv shell``
