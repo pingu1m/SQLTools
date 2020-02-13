@@ -1,4 +1,4 @@
-sqldump
+sqltools
 =======
 
 CLI for backup remote SQL databases either locally or to a S3 like destination.
@@ -7,7 +7,7 @@ Preparing for Development
 -------------------------
 
 1. Ensure ``pip`` and ``pipenv`` are installed
-2. Clone repository: ``git clone gitlab:sqldump``
+2. Clone repository: ``git clone gitlab:sqltools``
 3. ``cd`` into the repository.
 4. Fetch development dependencies ``make install``
 5. Activate virtualenv: ``pipenv shell``
@@ -21,13 +21,13 @@ S3 Example w/ bucket name:
 
 ::
 
-    $ sqldump postgres://bob@example.com:5432/db_one --engine postres --driver s3 backups
+    $ sqltools postgres://bob@example.com:5432/db_one --engine postres --driver s3 backups
 
 Local Example w/ local path:
 
 ::
 
-    $ sqldump postgres://bob@example.com:5432/db_one --engine postgres --driver local /var/local/db_one/backups/dump.sql
+    $ sqltools postgres://bob@example.com:5432/db_one --engine postgres --driver local /var/local/db_one/backups/dump.sql
 
 Running Tests
 -------------

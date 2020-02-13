@@ -1,5 +1,5 @@
 import pytest
-from sqldump import cli
+from sqltools import cli
 
 
 purl = "postgres://user@localhost:5432/sampledb"
