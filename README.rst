@@ -15,19 +15,21 @@ Preparing for Development
 Usage
 -----
 
-Pass in a full database URL, the database type, the storage driver, and the destination
+Pass in the type of the database to backup, the host, the user, the password or set an environment variable called ``SQL_USER_PASSWORD``, the port (optional), the database name and finally the storage driver ['s3', 'local']
 
 S3 Example w/ bucket name:
 
 ::
 
-    $ sqltools postgres://bob@example.com:5432/db_one --engine postres --driver s3 backups
+    $ sqltools --type postgres --host 127.0.0.1 --user user --password password --port 5432 --db sampledb --driver s3 backups
+    $ sqltools --type mysql    --host 127.0.0.1 --user user --password password --port 3306 --db sampledb --driver s3 backups
 
 Local Example w/ local path:
 
 ::
 
-    $ sqltools postgres://bob@example.com:5432/db_one --engine postgres --driver local /var/local/db_one/backups/dump.sql
+    $ sqltools --type postgres --host 127.0.0.1 --user user --password password --port 5432 --db sampledb --driver s3 local dump.sql
+    $ sqltools --type mysql    --host 127.0.0.1 --user user --password password --port 3306 --db sampledb --driver s3 local dump.sql
 
 Running Tests
 -------------
